@@ -27,6 +27,7 @@ RUN apt-get update -y && \
       python3.8-dev \
       python3-pip && \
     pip install --no-cache-dir --upgrade pip && \
+    pip install git+https://github.com/giuseppe-steduto/reana-commons@release-0.9.5a1 && \
     pip install --no-cache-dir -r /code/requirements.txt && \
     apt-get remove -y \
       gcc \
@@ -35,13 +36,11 @@ RUN apt-get update -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
-COPY requirements.txt /code/
-RUN pip install --no-cache-dir -r /code/requirements.txt
-
 # Copy cluster component source code
 WORKDIR /code
 COPY . /code
+
+RUN pip install git+https://github.com/giuseppe-steduto/reana-commons@release-0.9.5a1
 
 # Are we debugging?
 ARG DEBUG=0
